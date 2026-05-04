@@ -37,8 +37,7 @@ import kotlinx.coroutines.launch
  */
 object ForwarderTabIndex {
     const val LOG = 0
-    const val CONFIG = 1
-    const val WEB = 2
+    const val WEB = 1
 }
 
 @OptIn(
@@ -58,8 +57,8 @@ internal fun BasicForwarderScreen(
      */
     onClearRequestLogs: (() -> Unit)? = null,
 ) {
-    // Tab 页面：日志、配置、网页
-    val pages = remember { listOf(R.string.forwarder_log, R.string.settings, R.string.web) }
+    // Tab 页面：日志、网页
+    val pages = remember { listOf(R.string.forwarder_log, R.string.web) }
     val state = rememberPagerState { pages.size }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -101,10 +100,6 @@ internal fun BasicForwarderScreen(
                         logs = requestLogs,
                         onClearLogs = onClearRequestLogs
                     )
-                }
-
-                ForwarderTabIndex.CONFIG -> {
-                    configScreen()
                 }
 
                 ForwarderTabIndex.WEB -> {
