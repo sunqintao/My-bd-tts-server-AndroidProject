@@ -74,6 +74,10 @@ fun SystemTtsForwarderScreen(cfgVM: ConfigViewModel = viewModel()) {
         // 传入 HTTP 请求日志
         requestLogs = cfgVM.requestLogs,
         // 传入清空日志回调
-        onClearRequestLogs = { cfgVM.clearRequestLogs() }
+        onClearRequestLogs = { cfgVM.clearRequestLogs() },
+        // 传入端口和运行状态
+        port = port,
+        isRunning = isRunning,
+        onSwitch = { context.switchSysTtsForwarder() }
     )
 }

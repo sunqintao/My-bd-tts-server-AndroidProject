@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -22,10 +23,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -68,6 +73,18 @@ fun ForwarderLogScreen(
     logs: List<RequestLogEntry>,
     onClearLogs: (() -> Unit)? = null,
     listState: LazyListState = rememberLazyListState(),
+    /**
+     * 监听端口号
+     */
+    port: Int = 0,
+    /**
+     * 服务是否正在运行
+     */
+    isRunning: Boolean = false,
+    /**
+     * 启动/停止服务的回调
+     */
+    onSwitch: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val darkTheme = isSystemInDarkTheme()
@@ -125,6 +142,50 @@ fun ForwarderLogScreen(
     }
 
     Column(modifier.fillMaxSize()) {
+        // 监听端口头部区域
+        if (port > 0) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "监听端口: $port",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            text = if (isRunning) "服务运行中" else "服务已停止",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (isRunning) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error
+                        )
+                    }
+
+                    if (onSwitch != null) {
+                        Switch(
+                            checked = isRunning,
+                            onCheckedChange = { onSwitch() }
+                        )
+                    } else {
+                        Text(
+                            text = if (isRunning) "●" else "○",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = if (isRunning) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            }
+        }
+
         // 标题栏
         Row(
             modifier = Modifier

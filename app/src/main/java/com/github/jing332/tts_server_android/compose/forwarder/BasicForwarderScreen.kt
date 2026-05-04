@@ -56,6 +56,18 @@ internal fun BasicForwarderScreen(
      * 清空请求日志的回调
      */
     onClearRequestLogs: (() -> Unit)? = null,
+    /**
+     * 监听端口号
+     */
+    port: Int = 0,
+    /**
+     * 服务是否正在运行
+     */
+    isRunning: Boolean = false,
+    /**
+     * 启动/停止服务的回调
+     */
+    onSwitch: (() -> Unit)? = null,
 ) {
     // Tab 页面：日志、网页
     val pages = remember { listOf(R.string.forwarder_log, R.string.web) }
@@ -98,7 +110,10 @@ internal fun BasicForwarderScreen(
                     ForwarderLogScreen(
                         modifier = Modifier.fillMaxSize(),
                         logs = requestLogs,
-                        onClearLogs = onClearRequestLogs
+                        onClearLogs = onClearRequestLogs,
+                        port = port,
+                        isRunning = isRunning,
+                        onSwitch = onSwitch
                     )
                 }
 
