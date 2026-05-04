@@ -57,17 +57,23 @@ fun SystemTtsForwarderScreen(cfgVM: ConfigViewModel = viewModel()) {
                     addAction(SysTtsForwarderService.ACTION_ON_LOG)
                     addAction(SysTtsForwarderService.ACTION_ON_CLOSED)
                     addAction(SysTtsForwarderService.ACTION_ON_STARTED)
+                    addAction(SysTtsForwarderService.ACTION_ON_REQUEST_LOG)
                 },
                 actionOnLog = SysTtsForwarderService.ACTION_ON_LOG,
                 actionOnClosed = SysTtsForwarderService.ACTION_ON_CLOSED,
                 actionOnStarted = SysTtsForwarderService.ACTION_ON_STARTED,
+                actionOnRequestLog = SysTtsForwarderService.ACTION_ON_REQUEST_LOG,
                 isRunning = isRunning,
                 onRunningChange = { isRunning = it },
                 switch = { context.switchSysTtsForwarder() },
                 port = port,
                 onPortChange = { port = it }
             )
-        }) {
-        "http://localhost:${port}"
-    }
+        },
+        onGetUrl = { "http://localhost:${port}" },
+        // 传入 HTTP 请求日志
+        requestLogs = cfgVM.requestLogs,
+        // 传入清空日志回调
+        onClearRequestLogs = { cfgVM.clearRequestLogs() }
+    )
 }

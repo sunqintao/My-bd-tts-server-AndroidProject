@@ -29,6 +29,7 @@ internal fun BasicConfigScreen(
     actionOnLog: String,
     actionOnClosed: String,
     actionOnStarted: String,
+    actionOnRequestLog: String? = null,
     isRunning: Boolean,
     onRunningChange: (Boolean) -> Unit,
     switch: () -> Unit,
@@ -53,6 +54,12 @@ internal fun BasicConfigScreen(
             actionOnStarted -> {
                 onRunningChange(true)
                 vm.logs.add(LogEntry(level = LogLevel.INFO, message = "服务已启动"))
+            }
+
+            actionOnRequestLog -> {
+                intent.getParcelableExtra<RequestLogEntry>(KeyConst.KEY_DATA)?.let { log ->
+                    vm.addRequestLog(log.method, log.uri, log.remoteAddress)
+                }
             }
         }
     }

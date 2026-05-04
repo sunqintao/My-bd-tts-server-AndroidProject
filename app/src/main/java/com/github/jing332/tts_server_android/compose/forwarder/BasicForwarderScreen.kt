@@ -32,6 +32,15 @@ import com.google.accompanist.web.rememberSaveableWebViewState
 import com.google.accompanist.web.rememberWebViewNavigator
 import kotlinx.coroutines.launch
 
+/**
+ * 转发器页面 Tab 索引
+ */
+object ForwarderTabIndex {
+    const val LOG = 0
+    const val CONFIG = 1
+    const val WEB = 2
+}
+
 @OptIn(
     ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
 )
@@ -40,8 +49,17 @@ internal fun BasicForwarderScreen(
     topBar: @Composable (TopAppBarScrollBehavior) -> Unit,
     configScreen: @Composable () -> Unit,
     onGetUrl: () -> String,
+    /**
+     * HTTP 请求日志列表，用于日志页面显示
+     */
+    requestLogs: List<RequestLogEntry> = emptyList(),
+    /**
+     * 清空请求日志的回调
+     */
+    onClearRequestLogs: (() -> Unit)? = null,
 ) {
-    val pages = remember { listOf(R.string.log, R.string.web) }
+    // Tab 页面：日志、配置、网页
+    val pages = remember { listOf(R.string.forwarder_log, R.string.settings, R.string.web) }
     val state = rememberPagerState { pages.size }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -55,7 +73,6 @@ internal fun BasicForwarderScreen(
                 topBar(scrollBehavior)
                 PrimaryTabRow(selectedTabIndex = state.currentPage, tabs = {
                     pages.forEachIndexed { index, strId ->
-                        val selected = state.currentPage == index
                         TextButton(onClick = {
                             scope.launch {
                                 state.animateScrollToPage(index)
@@ -75,10 +92,22 @@ internal fun BasicForwarderScreen(
                 .fillMaxSize(),
             state = state,
             userScrollEnabled = true
-        ) {
-            when (it) {
-                0 -> configScreen()
-                1 -> {
+        ) { pageIndex ->
+            when (pageIndex) {
+                ForwarderTabIndex.LOG -> {
+                    // 独立的转发器日志页面，显示 HTTP 请求日志
+                    ForwarderLogScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        logs = requestLogs,
+                        onClearLogs = onClearRequestLogs
+                    )
+                }
+
+                ForwarderTabIndex.CONFIG -> {
+                    configScreen()
+                }
+
+                ForwarderTabIndex.WEB -> {
                     LocalBroadcastReceiver(intentFilter = IntentFilter(SysTtsForwarderService.ACTION_ON_STARTED)) {
                         navigator.loadUrl(onGetUrl())
                     }
@@ -96,5 +125,4 @@ internal fun BasicForwarderScreen(
             }
         }
     }
-
 }

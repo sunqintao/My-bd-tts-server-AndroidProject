@@ -7,18 +7,22 @@ import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.ApplicationEngineFactory
 import io.ktor.server.netty.NettyApplicationEngine
 
-
 /**
  * An [ApplicationEngineFactory] providing a Netty-based [ApplicationEngine]
  */
 internal object CustomNetty : ApplicationEngineFactory<NettyApplicationEngine, NettyApplicationEngine.Configuration> {
+
+    init {
+        // 启用端口复用，解决 "Address already in use" 问题
+        System.setProperty("io.netty.transport.socket.isReuseAddressEnabled", "true")
+    }
 
     override fun configuration(
         configure: NettyApplicationEngine.Configuration.() -> Unit,
     ): NettyApplicationEngine.Configuration {
 
         return NettyApplicationEngine.Configuration().apply {
-             maxInitialLineLength = 8192
+            maxInitialLineLength = 8192
         }.apply(configure)
     }
 

@@ -27,6 +27,7 @@ import com.github.jing332.common.utils.startForegroundCompat
 import com.github.jing332.common.utils.toast
 import com.github.jing332.tts_server_android.R
 import com.github.jing332.tts_server_android.compose.MainActivity
+import com.github.jing332.tts_server_android.compose.forwarder.RequestLogEntry
 import com.github.jing332.tts_server_android.constant.AppConst
 import com.github.jing332.tts_server_android.constant.KeyConst
 import kotlinx.coroutines.CoroutineScope
@@ -123,6 +124,28 @@ abstract class AbsForwarderService(
     protected fun sendLog(@LogLevel level: Int, msg: String) {
         sendLog(LogEntry(level, msg))
     }
+
+    /**
+     * 发送 HTTP 请求日志
+     * @param method HTTP 方法
+     * @param uri 请求 URI
+     * @param remoteAddress 客户端地址
+     */
+    protected fun sendRequestLog(method: String, uri: String, remoteAddress: String) {
+        val entry = RequestLogEntry(
+            id = System.currentTimeMillis(),
+            method = method,
+            uri = uri,
+            remoteAddress = remoteAddress,
+            time = java.text.SimpleDateFormat("HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+        )
+        val intent = Intent(actionRequestLog).apply {
+            putExtra(KeyConst.KEY_DATA, entry)
+        }
+        AppConst.localBroadcast.sendBroadcast(intent)
+    }
+
+    abstract val actionRequestLog: String
 
     override fun onDestroy() {
         super.onDestroy()
