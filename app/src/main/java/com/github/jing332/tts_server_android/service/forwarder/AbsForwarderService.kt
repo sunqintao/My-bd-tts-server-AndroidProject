@@ -42,6 +42,7 @@ abstract class AbsForwarderService(
     private val actionLog: String,
     private val actionStarted: String,
     private val actionClosed: String,
+    private val actionRequestLog: String,
     private val notificationChanId: String,
     @StringRes val notificationChanTitle: Int,
     @StringRes val notificationTitle: Int,
@@ -144,8 +145,6 @@ abstract class AbsForwarderService(
         }
         AppConst.localBroadcast.sendBroadcast(intent)
     }
-
-    abstract val actionRequestLog: String
 
     override fun onDestroy() {
         super.onDestroy()
