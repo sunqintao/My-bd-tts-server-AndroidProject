@@ -1,9 +1,13 @@
 .gradle/
 build/
 **/build/
+.kotlin/
+build-logic/.kotlin/
 local.properties
 *.apk
 *.aab
 *.keystore
 .idea/
 .DS_Store
+*.log
+release.jks

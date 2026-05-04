@@ -32,6 +32,7 @@ class SysTtsForwarderService(
     actionLog = ACTION_ON_LOG,
     actionStarted = ACTION_ON_STARTED,
     actionClosed = ACTION_ON_CLOSED,
+    actionRequestLog = ACTION_ON_REQUEST_LOG,
     notificationChanId = "systts_forwarder_status",
     notificationChanTitle = R.string.forwarder_systts,
     notificationIcon = R.drawable.ic_baseline_compare_arrows_24,
@@ -42,6 +43,7 @@ class SysTtsForwarderService(
         const val ACTION_ON_CLOSED = "ACTION_ON_CLOSED"
         const val ACTION_ON_STARTED = "ACTION_ON_STARTED"
         const val ACTION_ON_LOG = "ACTION_ON_LOG"
+        const val ACTION_ON_REQUEST_LOG = "ACTION_ON_REQUEST_LOG"
 
         private val logger = KotlinLogging.logger(TAG)
 
@@ -81,6 +83,10 @@ class SysTtsForwarderService(
             mServer = SystemTtsForwardServer(port, object : SystemTtsForwardServer.Callback {
                 override fun log(level: Int, message: String) {
                     sendLog(level, message)
+                }
+
+                override fun logRequest(method: String, uri: String, remoteAddress: String) {
+                    sendRequestLog(method, uri, remoteAddress)
                 }
 
                 override suspend fun tts(params: TtsParams): File? {

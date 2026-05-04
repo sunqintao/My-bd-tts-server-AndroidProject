@@ -85,11 +85,9 @@ android {
         release {
             signingConfig signingConfigs.release
 
-            // 安全压缩尝试版：
-            // 开启 shrink/minify，但配合 proguard-rules.pro 里的 dontoptimize/dontobfuscate，
-            // 尽量压小包，同时避免 Ktor 转发器被 R8 优化/混淆搞崩。
-            minifyEnabled true
-            shrinkResources true
+            // 临时禁用压缩以加快编译
+            minifyEnabled false
+            shrinkResources false
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

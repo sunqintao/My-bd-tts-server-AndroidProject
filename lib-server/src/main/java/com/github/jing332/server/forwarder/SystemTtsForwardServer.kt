@@ -106,6 +106,10 @@ class SystemTtsForwardServer(val port: Int, val callback: Callback) : Server {
                 val uri = call.request.uri
                 val remoteAddress = call.request.origin.remoteAddress
 
+                // 记录 HTTP 请求日志
+                callback.logRequest(method, uri, remoteAddress)
+
+                // 同时保留原有日志
                 callback.log(
                     level = Log.INFO,
                     "$method: ${uri.decodeURLQueryComponent()} \n remote: $remoteAddress \n"

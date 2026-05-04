@@ -1,101 +1,145 @@
-![MIT](https://img.shields.io/badge/license-MIT-green)
-[![Crowdin](https://img.shields.io/badge/Localization-Crowdin-blueviolet?logo=Crowdin)](https://crowdin.com/project/tts-server)
+# TTS Server Android Project
 
-[![CI](https://github.com/jing332/tts-server-android/actions/workflows/release.yml/badge.svg)](https://github.com/jing332/tts-server-android/actions/workflows/release.yml)
-[![CI](https://github.com/jing332/tts-server-android/actions/workflows/test.yml/badge.svg)](https://github.com/jing332/tts-server-android/actions/workflows/test.yml)
+基于 [jwoo1982217/My-bd-tts-server-AndroidProject](https://github.com/jwoo1982217/My-bd-tts-server-AndroidProject) fork 的 TTS Server Android 项目。
 
-![GitHub release](https://img.shields.io/github/downloads/jing332/tts-server-android/total)
-![GitHub release (latest by date)](https://img.shields.io/github/downloads/jing332/tts-server-android/latest/total)
+## 功能特性
 
-# TTS Server [![](https://img.shields.io/badge/Q%E7%BE%A4-124841768-blue)](https://jq.qq.com/?_wv=1027&k=y7WCDjEA)
+### 1. 系统 TTS 转发
+- 将 Android 系统 TTS 转发为 HTTP 服务
+- 支持自定义端口配置
+- 后台保活服务
 
-<details>
-  <summary>查看截图</summary>
+### 2. 独立的转发器日志页面
+- 新增独立的 HTTP 请求日志显示页面
+- Tab 切换：日志 / 配置 / 网页
+- 记录 HTTP 方法、URI、远程地址
+- 支持清空日志和复制日志内容
 
-  <img src="./images/1.jpg" height="150px">
-  <img src="./images/2.jpg" height="150px">
-  <img src="./images/3.jpg" height="150px">
-  <img src="./images/4.jpg" height="150px">
+### 3. WebDAV 备份系统
+- 自动备份配置到 WebDAV 服务器
+- 支持手动备份和恢复
+- 后台定时同步
 
-</details>
+### 4. 批量标签管理
+- 批量编辑 TTS 引擎标签
+- 快速筛选和管理
 
-# Download
+### 5. 后台白名单工具
+- 管理后台运行白名单应用
+- 提高后台存活率
 
-* [Stable - 稳定版(Releases)](https://github.com/jing332/tts-server-android/releases)
+## 版本信息
 
-* [Dev - 开发版(Actions 需登陆Github账户)](https://github.com/jing332/tts-server-android/actions)
+- **当前版本**: v1.26.05042257
+- **APK**: `newapk/TTS-Server-v1.26.05042257.apk`
 
-## Actions mirror
+## 框架版本
 
-app: https://jing332.lanzn.com/b09jpjd2d
+| 组件 | 版本 |
+|------|------|
+| Kotlin | 2.2.21 |
+| AGP | 8.9.0 |
+| Gradle | 8.11.1 |
+| Room | 2.7.1 |
+| Compose BOM | 2025.02.00 |
+| compileSdk | 36 |
+| targetSdk | 36 |
+| minSdk | 26 |
 
-dev: https://jing332.lanzn.com/b09ig9qla
+## 改动日志
 
-密码Password: 1234
+### v1.26.05042257 (2025-05-04)
+**修复**
+- 修复 AbsForwarderService 构造函数参数冲突
+- 修复 Netty 端口复用问题 (SO_REUSEADDR)
 
+**功能**
+- 添加独立的转发器日志页面 (ForwarderLogScreen.kt)
+- BasicForwarderScreen 添加日志/配置/网页三个 Tab
+- ConfigViewModel 添加 requestLogs 列表管理
+- 通过 BroadcastReceiver 将服务端请求日志传递到前端
+- 日志页面支持清空和复制功能
 
-# Grateful
+### v1.26.05022057 (框架升级)
+**升级**
+- Kotlin 2.1.10 → 2.2.21
+- AGP 8.8.1 → 8.9.0
+- Room 2.6.1 → 2.7.1
+- Compose BOM 2024.10 → 2025.02.00
+- compileSdk 34 → 36
 
-<details>
-  <summary>开源项目</summary>
+### v1.26.05012057 (功能迁移)
+**新增功能**
+- WebDAV 备份系统
+- 后台保活系统
+- 批量标签管理
+- 后台白名单工具
 
-| Application                                                                     | Microsoft TTS                                                         |
-|---------------------------------------------------------------------------------|-----------------------------------------------------------------------|
-| [gedoor/legado](https://github.com/gedoor/legado)                               | [wxxxcxx/ms-ra-forwarder](https://github.com/wxxxcxx/ms-ra-forwarder) |
-| [ag2s20150909/TTS](https://github.com/ag2s20150909/TTS)                         | [litcc/tts-server](https://github.com/litcc/tts-server)               |
-| [benjaminwan/ChineseTtsTflite](https://github.com/benjaminwan/ChineseTtsTflite) | [asters1/tts](https://github.com/asters1/tts)                         |
-| [yellowgreatsun/MXTtsEngine](https://github.com/yellowgreatsun/MXTtsEngine)     |
-| [2dust/v2rayNG](https://github.com/2dust/v2rayNG)                               |
+## 项目结构
 
-| Library                                                                                                         | Description                                                                                                                                                   |
-|-----------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [dromara/hutool](https://github.com/dromara/hutool/)                                                            | 🍬A set of tools that keep Java sweet.                                                                                                                        |
-| [LouisCAD/Splitties](https://github.com/LouisCAD/Splitties)                                                     | A collection of hand-crafted extensions for your Kotlin projects.                                                                                             |
-| [getactivity/logcat](https://github.com/getactivity/logcat)                                                     | Android 日志打印框架，在手机上可以直接看到 Logcat 日志啦                                                                                                                          |
-| [rosuH/AndroidFilePicker](https://github.com/rosuH/AndroidFilePicker)                                           | FilePicker is a small and fast file selector library that is constantly evolving with the goal of rapid integration, high customization, and configurability~ |
-| [androidbroadcast/ViewBindingPropertyDelegate](https://github.com/androidbroadcast/ViewBindingPropertyDelegate) | Make work with Android View Binding simpler                                                                                                                   |
-| [zhanghai/AndroidFastScroll](https://github.com/zhanghai/AndroidFastScroll)                                     | Fast scroll for Android RecyclerView and more                                                                                                                 |
-| [Rosemoe/sora-editor](https://github.com/Rosemoe/sora-editor)                                                   | sora-editor is a cool and optimized code editor on Android platform                                                                                           |
-| [gedoor/rhino-android](https://github.com/gedoor/rhino-android)                                                 | Give access to RhinoScriptEngine from the JSR223 interfaces on Android JRE.                                                                                   |
-| [liangjingkanji/BRV](https://github.com/liangjingkanji/BRV)                                                     | Android上最好的RecyclerView框架, 比 BRVAH 更简单强大                                                                                                                      |
-| [liangjingkanji/Net](https://github.com/liangjingkanji/Net)                                                     | Android最好的网络请求工具, 比 Retrofit/OkGo 更简单易用                                                                                                                       |
-| [chibatching/kotpref](https://github.com/chibatching/kotpref)                                                   | Android SharedPreferences delegation library for Kotlin                                                                                                       |
-| [google/ExoPlayer](https://github.com/google/ExoPlayer)                                                         | An extensible media player for Android                                                                                                                        |
-| [material-components-android](https://github.com/material-components/material-components-android)               | Modular and customizable Material Design UI components for Android                                                                                            |
-| [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization/)                                       | Kotlin multiplatform / multi-format serialization                                                                                                             |
-| [kotlinx.coroutine](https://github.com/Kotlin/kotlinx.coroutines)                                               | Library support for Kotlin coroutines                                                                                                                         |
-
-</details>
-
-其他资源：
-
-* <a href="https://www.flaticon.com/free-icons/female" title="female icons">Female icons created by popcornarts - Flaticon</a>
-
-* [阿里巴巴IconFont](https://www.iconfont.cn/)
-
-* [酷安@沉默_9520](http://www.coolapk.com/u/25956307) 本APP图标作者
-
-# Build
-
-### Android Studio:
-在项目根目录下新建文件 `local.properties` 并写入如下内容：
 ```
-KEY_PATH=E\:\\Android\\key\\sign.jks (签名文件)
-KEY_PASSWORD= 密码
-ALIAS_NAME= 别名
-ALIAS_PASSWORD= 别名密码
+My-bd-tts-server/
+├── app/                          # Android 应用模块
+│   └── src/main/java/.../
+│       ├── compose/               # Compose UI
+│       │   ├── forwarder/        # 转发器相关页面
+│       │   │   ├── ForwarderLogScreen.kt  # 独立的转发器日志页面
+│       │   │   ├── BasicForwarderScreen.kt # 转发器主页面
+│       │   │   ├── ConfigViewModel.kt     # 配置 ViewModel
+│       │   │   └── systts/               # 系统 TTS 转发
+│       │   └── systts/           # 系统 TTS 日志页面
+│       └── service/              # 服务层
+│           └── forwarder/        # 转发器服务
+│               ├── AbsForwarderService.kt
+│               └── system/
+│                   └── SysTtsForwarderService.kt
+├── lib-server/                    # 服务器核心库
+│   └── src/main/java/.../
+│       └── server/
+│           ├── BaseCallback.kt    # HTTP 回调基类 (含请求日志)
+│           ├── MyNettty.kt        # Netty 服务器 (端口复用)
+│           └── forwarder/
+│               └── SystemTtsForwardServer.kt
+└── newapk/                       # 编译输出目录
+    └── TTS-Server-v1.26.05042257.apk
 ```
 
+## 关键文件修改
 
+### lib-server 模块
+| 文件 | 改动 |
+|------|------|
+| `BaseCallback.kt` | 添加 `RequestLogEntry` 数据类、`requestLogList` 列表和 `logRequest()` 方法 |
+| `MyNettty.kt` | 添加 `.isReuseAddress(true)` 修复端口占用 |
+| `SystemTtsForwardServer.kt` | 在 HTTP intercept 中调用 `callback.logRequest()` |
 
-### Github Actions:
-> 详见 https://www.cnblogs.com/jing332/p/17452492.html
+### app 模块
+| 文件 | 改动 |
+|------|------|
+| `ForwarderLogScreen.kt` | 新增：独立的转发器日志页面组件 |
+| `BasicForwarderScreen.kt` | 添加日志/配置/网页三个 Tab |
+| `ConfigViewModel.kt` | 添加 `requestLogs` 列表管理 |
+| `BasicConfigScreen.kt` | 添加 `actionOnRequestLog` 参数 |
+| `SysTtsForwarderService.kt` | 实现 `logRequest` 回调，发送 `ACTION_ON_REQUEST_LOG` 广播 |
+| `AbsForwarderService.kt` | 添加 `sendRequestLog()` 方法 |
 
-使用 Git Bash 对签名文件进行无换行Base64编码: `openssl base64 < key.jks | tr -d '\r\n' | tee key.jks.base64.txt`
+## 安装 APK
 
-分别添加如下四个安全变量 (Repository secrets):
-> 前往以下链接：https://github.com/你的用户名/tts-server-android/settings/secrets/actions
-* `ALIAS_NAME` 别名
-* `ALIAS_PASSWORD` 别名密码
-* `KEY_PASSWORD` 密码
-* `KEY_STORE` 前面生成的 sign.jks.base64.txt 内容
+```bash
+# 通过 ADB 安装
+adb install newapk/TTS-Server-v1.26.05042257.apk
+```
+
+## 构建
+
+```bash
+# Debug 版本
+./gradlew :app:assembleDebug
+
+# Release 版本
+./gradlew :app:assembleRelease
+```
+
+## 许可证
+
+遵循原项目许可证
